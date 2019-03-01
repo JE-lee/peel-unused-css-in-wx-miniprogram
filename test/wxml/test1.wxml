@@ -1,0 +1,4 @@
+<view class="wondertitle head">
+  <image class="titlebg" src="/images/discover/textbg.png"></image>
+  <text class="text">浏览历史</text>
+</view>

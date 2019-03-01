@@ -1,0 +1,4 @@
+<view class="dialog {{ index ? 'red' :  index ? 'yellow' : '' }} red">
+  <image class="" src="/images/discover/textbg.png"></image>
+  <text class="">浏览历史</text>
+</view>

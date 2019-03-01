@@ -1,0 +1,34 @@
+@import "index.wxss";
+
+page{
+  line-height: 1.0;
+}
+
+.weui-cells{
+  color:#fff;
+}
+
+view .head{
+  color: blue;
+}
+
+@keyframes rotate{
+  0%{
+    top: 50%;
+  }
+  to{
+    bottom: 100%;
+  }
+}
+
+
+@font-face{
+  font-family:"Eemblema One";
+  src:url("http://.....woff"),
+  url("http://......tff");
+}
+
+#banner{
+  font-size: 100rpx;
+  a:12;
+}

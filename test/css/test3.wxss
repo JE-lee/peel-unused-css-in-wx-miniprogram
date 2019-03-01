@@ -1,0 +1,12 @@
+page{
+
+}
+
+.weui-cells:active, .head:nth-of-type(1){
+  color:#fff;
+}
+
+.weui-cells.head{
+  color:red;
+}
+

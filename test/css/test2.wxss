@@ -1,0 +1,8 @@
+
+page{
+
+}
+
+.weui-cells, .head:active{
+  color:#fff;
+}
