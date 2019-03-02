@@ -26,7 +26,7 @@ async function extracClass(data, filePath){
         if (isHasValid) {
           pushWarn()
         }
-        classNames = classNames.concat(classes.map(cls => `${prefix}${cls}${suffix}`))
+        classNames = classNames.concat(classes.map(cls => `${prefix}${cls}${suffix}`).filter(cls => cls))
         
       } else {
         if (/^[^|?.\/\\]+$/.test(item)){

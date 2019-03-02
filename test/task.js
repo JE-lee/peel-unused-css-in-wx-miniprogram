@@ -12,7 +12,7 @@ describe('task', function(){
       })
     let { warns, cssAst } = await task(cssPath, wxmls.map(wxml => path.resolve(__dirname, './task', wxml)))
     assert.ok(!warns.length, '应该没有无法识别的插值表达式')
-    assert.ok(cssAst.stylesheet.rules.length === 4, '应该只剩下4条规则')
+    assert.ok(cssAst.stylesheet.rules.length === 2, '应该只剩下2条规则')
     
   })
 })

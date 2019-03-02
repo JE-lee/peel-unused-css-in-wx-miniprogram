@@ -18,22 +18,21 @@ async function task(cssPath, wxmlPaths){
     })
 
     classNames.forEach(clsName => {
-      let indexs = []
       classes.forEach((cls, index) => {
         if(cls.className === clsName){
-          indexs.push(index)
+          classes[index].invalid = true
         }
       })
 
       // remove
-      indexs.forEach(i => classes.splice(i,1))
+      classes = classes.filter(cls => !cls.invalid)
     })
   }
 
   // resolve cssAst's rules
-  classes.forEach(item => {
-    let selectors = cssAst.stylesheet.rules[item.rulesIndex].selectors
-    selectors.splice(item.selectorsIndex, 1)
+  classes.forEach(item => cssAst.stylesheet.rules[item.rulesIndex].selectors[item.selectorsIndex] = '')
+  cssAst.stylesheet.rules.forEach(rule => {
+    rule.selectors = rule.selectors.filter(sel => sel)
   })
 
   cssAst.stylesheet.rules = cssAst.stylesheet.rules.filter(rule => rule.selectors.length)

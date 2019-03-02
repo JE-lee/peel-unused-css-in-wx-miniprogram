@@ -23,15 +23,14 @@ describe('wxml parse', function(){
   it('#test3', async function () {
     let { classNames, warn, filePath } = await wxmlParse(test3)
     assert.ok(!warn.length, 'warn的长度应该是0')
-    assert.equal(classNames.length, 5, 'class 的长度应该是5')
+    assert.equal(classNames.length, 4, 'class 的长度应该是4')
   })
 
   let test5 = path.resolve(__dirname, './wxml/test5.wxml')
   it('#test5', async function () {
     let { classNames, warn, filePath } = await wxmlParse(test5)
-    debugger
     assert.ok(warn.length == 1, 'warn的长度应该是1')
-    assert.equal(classNames.length, 4, 'class 的长度应该是4')
+    assert.equal(classNames.length, 3, 'class 的长度应该是3')
   })
 
   let test6 = path.resolve(__dirname, './wxml/test6.wxml')
