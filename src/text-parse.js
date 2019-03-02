@@ -11,12 +11,8 @@ function parse(expression){
   }
 }
 
-async function isConditionalExpression(expression){
-  try {
-    return namedTypes.ConditionalExpression.check(jsep(expression))
-  } catch (error) {
-    return false
-  }
+function isConditionalExpression(expression){
+  return namedTypes.ConditionalExpression.check(expression)
 }
 
 async function extractCss(expression){
@@ -34,21 +30,21 @@ async function extractCss(expression){
   }
   if (!namedTypes.ConditionalExpression.check(parseResult))
     return failResult
-  debugger
+  
   let extract = unit => {
     let data = {
       classes: [],
       isHasValid: false
     }
     let op = ex => {
+      
       if (namedTypes.Literal.check(ex)) {
-        if(ex.value.trim()) data.classes.push(ex.value.trim())
+        data.classes.push(ex.value.trim())
       } else if (isConditionalExpression(ex)) {
         let extractResult = extract(ex)
         data.classes = data.classes.concat(extractResult.classes)
         data.isHasValid = extractResult.isHasValid || data.isHasValid
       } else {
-        debugger
         data.isHasValid = true
       }
     }
