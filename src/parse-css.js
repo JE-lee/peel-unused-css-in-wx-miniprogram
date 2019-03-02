@@ -32,7 +32,7 @@ module.exports = function parse(filePath){
           selClasses = selClasses.map(cla => {
             return {
               selector: i,
-              className: cla.trim(),
+              className: cla.trim().slice(1),
               selectorsIndex: k,
               rulesIndex: index
             }

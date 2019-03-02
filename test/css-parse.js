@@ -18,14 +18,14 @@ describe('css parse', function(){
     assert.equal(result.classes[1].rulesIndex, 1, '第2个class的rulesIndex应该是1')
     assert.strictEqual(result.classes[0].selectorsIndex, 0, '第1个class的selectorsIndex应该是0')
     assert.strictEqual(result.classes[1].selectorsIndex, 1, '第2个class的selectorsIndex应该是1')
-    assert.strictEqual(result.classes[1].className, '.head', '第2个class应该是.head')
+    assert.strictEqual(result.classes[1].className, 'head', '第2个class应该是.head')
   })
 
   let test3 = path.resolve(__dirname, './css/test3.wxss')
   it('#test3.wxss', async function () {
     let result = await cssParse(test3)
     assert.equal(result.classes.length, 4, '提取的class长度应该是4')
-    assert.equal(result.classes[1].className, '.head', '第2个class的rulesIndex应该是1')
+    assert.equal(result.classes[1].className, 'head', '第2个class的rulesIndex应该是1')
     assert.equal(result.classes[3].rulesIndex, 2, '第4个class的rulesIndex应该是2')
     assert.equal(result.classes[3].selectorsIndex, 0, '第4个class的selectorsIndex应该是0')
   })
