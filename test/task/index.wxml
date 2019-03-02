@@ -1,0 +1,11 @@
+<view class="weui-dialog">
+  <image class="icon"></image>
+  <text></text>
+</view>
+
+<text class="tip"></text>
+
+<view class="control {{ show ? 'active' : '' }}">
+
+</view>
+<view class="view-hover"></view>
