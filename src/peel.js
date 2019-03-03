@@ -22,31 +22,25 @@ async function isComponent(wxmlPath){
   return true
 }
 
-function printWarns(warns){
-  if(!warns.length) return 
-  warns.forEach(warn => {
-    console.log(chalk.yellow(`warning:${warn.filePath}\n`+`  lines:${warn.lines}  expression:${warn.expression}`))
-  })
-}
 async function peelWXMiniprogram(){
   // find project root
-  let testRoot = path.resolve(process.cwd(), './test/project')
-  let configPath = path.resolve(testRoot, './project.config.json'),
+  let cwd = path.resolve(process.cwd(), './test/project')
+  let configPath = path.resolve(cwd, './project.config.json'),
     config = null
   try {
     config = await readFile(configPath, 'utf8')
   } catch (error) {
-    config = ''
+    
   }
   
   if(!config){
     console.log(chalk.yellow(`can't find project.config.json,use current directory for root`))
+    config = {}
   }else {
     config = JSON.parse(config)
   }
 
-  
-  let root = path.resolve(testRoot, config.miniprogramRoot || ''),
+  let root = path.resolve(cwd, config.miniprogramRoot || ''),
    cssPath = path.resolve(root, './app.wxss'),
    wxmls = glob.sync('**/*.wxml', {
      cwd: root
@@ -59,18 +53,7 @@ async function peelWXMiniprogram(){
    }
   }
   wxmls = wxmls.filter(wxml => wxml)
-
-  let { warns, cssAst, cssPath: entryCss } = await task(cssPath, wxmls),
-   cssCode = css.stringify(cssAst)
-  // rewrite css file
-
-  fs.writeFileSync(entryCss, cssCode, 'utf8')
-
-  console.log(chalk.green('peel success!'))
-  if(warns.length){
-    printWarns()
-  }
-  
+  await task(cssPath, wxmls)
 }
 
 peelWXMiniprogram()
