@@ -1,6 +1,7 @@
 > peel-unused-css-in-wx-miniprogram 是一款用来清除app.wxss中未使用的class的样式的cli工具。使用它你可以清除掉app.wxss中以及在app.wxss中@import的未使用的class样式。从而减少冗余的文件体积。
 
 ## 如何使用
+在项目根目录
 ```bash
 npm install -g peel-unused-css-in-miniprogram
 peel-wx 
