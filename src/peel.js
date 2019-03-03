@@ -22,9 +22,8 @@ async function isComponent(wxmlPath){
   return true
 }
 
-async function peelWXMiniprogram(){
+async function peelWXMiniprogram(cwd){
   // find project root
-  let cwd = path.resolve(process.cwd(), './test/project')
   let configPath = path.resolve(cwd, './project.config.json'),
     config = null
   try {
@@ -34,7 +33,7 @@ async function peelWXMiniprogram(){
   }
   
   if(!config){
-    console.log(chalk.yellow(`can't find project.config.json,use current directory for root`))
+    console.log(chalk.yellowBright(`can't find project.config.json,use current directory for root`))
     config = {}
   }else {
     config = JSON.parse(config)
@@ -56,5 +55,5 @@ async function peelWXMiniprogram(){
   await task(cssPath, wxmls)
 }
 
-peelWXMiniprogram()
+module.exports = peelWXMiniprogram
 

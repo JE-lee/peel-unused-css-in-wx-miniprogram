@@ -45,7 +45,8 @@ module.exports = function parse(filePath){
       resolve({
         classes,
         cssAst,
-        filePath
+        filePath,
+        originalSize: data.length
       })
 
     })

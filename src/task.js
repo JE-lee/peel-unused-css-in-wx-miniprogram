@@ -4,11 +4,12 @@ let wxmlParse = require('./parse-wxml')
 let cssParse = require('./parse-css')
 let chalk = require('chalk')
 let css = require('css')
+let ProgressBar = require('progress')
 
 async function handleCss(cssPath){
-  let { invalid,  classes, cssAst, filePath } = await cssParse(cssPath)
+  let { invalid,  classes, cssAst, filePath, originalSize } = await cssParse(cssPath)
   if(invalid) return []
-  let results = [{ classes, cssAst, filePath }]
+  let results = [{ classes, cssAst, filePath, originalSize }]
   let getImport = i => {
     let arr = i.match(/"\s*(.+)\s*"/)
     return arr ? arr[1] : ''
@@ -24,25 +25,42 @@ async function handleCss(cssPath){
 }
 
 function rewrite(cssOb){
+  let total = 0, reduce = 0
   cssOb.forEach(ob => {
     let cssCode = css.stringify(ob.cssAst)
+    total += ob.originalSize
+    reduce += cssCode.length
     fs.writeFileSync(ob.filePath, cssCode, 'utf8')
   })
+
+  console.log(chalk.green(`reduce total size: ${ ((Math.max(0, total - reduce )) / 1024).toFixed(3)} kb` ))
 }
 
 
 function printWarns(warns){
   if(!warns.length) return 
   warns.forEach(warn => {
-    console.log(chalk.yellow(`warning:${warn.filePath}\n`+`  lines:${warn.lines}  expression:${warn.expression}`))
+    console.log(chalk.yellowBright(`warning:${warn.filePath}`))
+    warn.warn.forEach(w => {
+      console.log(chalk.green(`  lines:${w.lines}  expression:${w.expression}\n`))
+    })
   })
 }
 
 async function task(cssPath, wxmlPaths){
   let cssResults = await handleCss(cssPath)
-  if(!cssResults.length) return Promise.reject(`can't parse the ${cssPath}`)
+  if(!cssResults.length) {
+    console.log(chalk.yellowBright(`can't parse the ${cssPath}`))
+    return Promise.reject(`can't parse the ${cssPath}`)
+  }
 
-  let warns = [] 
+  let warns = [],
+    bar = new ProgressBar('peeling: [:bar] :percent',{
+      complete: '=',
+      incomplete: ' ',
+      width: 50,
+      total: wxmlPaths.length
+    })
   for(let i = 0; i < wxmlPaths.length; i++){
     let { invalid: wxmlInvalid, classNames, warn, filePath: wxmlPath} = await wxmlParse(wxmlPaths[i])
     // parse wxml fail 
@@ -67,6 +85,8 @@ async function task(cssPath, wxmlPaths){
       // remove
       cssResults[index].classes = classes.filter(cls => !cls.invalid)
     })
+
+    bar.tick()
   }
 
   // resolve cssAst's rules
@@ -81,7 +101,6 @@ async function task(cssPath, wxmlPaths){
 
   // rewrite css file 
   rewrite(cssResults)
-  // TODO: data statistics
   console.log(chalk.green(`sucess!`))
   // print warns 
   printWarns(warns)
