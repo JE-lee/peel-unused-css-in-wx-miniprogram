@@ -1,48 +1,32 @@
 @import "./lib/reset.wxss";
+@import "./lib/weui.wxss";
+page {
+  line-height: 1.0;
+}
+view {
+  background-color: #888;
+}
+#main{
+  display: flex;
+  align-items: center;
+}
+#main .banner,#main.banner{
+  text-decoration: underline;
+}
+.title{
+  font-size: 36rpx;
+}
+@font-face {
+  font-family: "Eemblema One";
+  src: url("http://.....woff"),
+      url("http://......tff");
+}
+@keyframes slide {
+  from {
+    top: -60%;
+  }
 
-.tip {
-  color: #fff;
-}
-.weui-dialog,.page__hastab{
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  color:#fff;
-}
-
-.icon.tip{
-
-}
-.tip{
-  color:#fff;
-}
-
-.page__hastab{
-  min-height: calc(100vh - 100rpx);
-  padding-bottom: 100rpx;
-}
-.linecamp-1{
-  overflow : hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-}
-.linecamp-2{
-  overflow : hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.view-hover{
-  background-color:#ededed;
-}
-.submit-hover{
-  transform: translate(0,8rpx) scale(0.98);
-}
-
-.view-hover.weui-dialog{
-  line-height: 1.6;
+  to {
+    top: 100%;
+  }
 }

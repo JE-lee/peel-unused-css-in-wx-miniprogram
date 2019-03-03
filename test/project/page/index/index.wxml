@@ -1,1 +1,2 @@
 <view class="index tip"></view>
+<view class="{{ show ? active : 'not-active'}}"></view>
