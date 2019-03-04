@@ -50,7 +50,6 @@ async function extractCss(expression){
       } else if (namedTypes.BinaryExpression.check(ex)){
         // 
       }else{
-        debugger
         data.isHasValid = true
       }
     }

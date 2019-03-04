@@ -7,7 +7,9 @@ describe('css parse', function(){
   let test1 = path.resolve(__dirname, './css/test1.wxss')
   it('#test1.wxss',async function(){
     let result = await cssParse(test1)
-    assert.equal(result.classes.length, 2, '提取的class长度应该是2')
+    assert.equal(result.classes.length, 3, '提取的class长度应该是3')
+    assert.equal(result.classes[1].className, 'head', '第1个class应该是head')
+    assert.equal(result.classes[2].className, 'content', '第2个class应该是content')
   })
 
   let test2 = path.resolve(__dirname, './css/test2.wxss')
@@ -33,6 +35,6 @@ describe('css parse', function(){
   let test4 = path.resolve(__dirname, './css/test4.wxss')
   it('#test4.wxss', async function () {
     let result = await cssParse(test4)
-    assert.ok(result.invalid)
+    assert.ok(result.invalid,'应该解析出错')
   })
 })

@@ -26,7 +26,7 @@ module.exports = function parse(filePath){
         if (item.type != 'rule') return
 
         item.selectors.forEach((i, k) => {
-          let selClasses = i.match(/\.[^.:]+/g)
+          let selClasses = i.match(/\.[^.:\s]+/g)
           if (!selClasses) return
 
           selClasses = selClasses.map(cla => {

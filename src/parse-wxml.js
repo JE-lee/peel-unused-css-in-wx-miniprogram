@@ -5,7 +5,7 @@ async function extracClass(data, filePath){
   let temp = [], pattern = /class\s*=\s*"([^"]*)"/g,
     classNames = [], warn = []
   while ((temp = pattern.exec(data)) != null) {
-    let arr = temp[1].split(/([^\s]*\{\{.*\}\}[^\s]*)/)
+    let arr = temp[1].split(/([^\s]*\{\{[^{}]*\}\}[^\s]*)/)
     for(let i = 0; i < arr.length; i ++){
       let item = arr[i].trim()
       let pushWarn = () => {
@@ -29,11 +29,14 @@ async function extracClass(data, filePath){
         classNames = classNames.concat(classes.map(cls => `${prefix}${cls}${suffix}`).filter(cls => cls))
         
       } else {
-        if (/^[^|?.\/\\]+$/.test(item)){
-          classNames = classNames.concat(item.split(/\s+/))
-        }else {
-          item && pushWarn()
-        }
+        item.split(/\s+/).forEach(cls => {
+          if (/^[^|?.\/\\]+$/.test(cls)) {
+            classNames.push(cls)
+          } else {
+            item && pushWarn()
+          }
+        })
+        
       }
 
     }

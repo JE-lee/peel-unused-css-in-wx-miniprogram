@@ -3,6 +3,6 @@ page{
 
 }
 
-.weui-cells, .head:active{
+.weui-cells, .head:active image, view{
   color:#fff;
 }

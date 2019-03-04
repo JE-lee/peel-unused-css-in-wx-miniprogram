@@ -12,6 +12,9 @@ view .head{
   color: blue;
 }
 
+.content image{
+  position:relative;
+}
 @keyframes rotate{
   0%{
     top: 50%;

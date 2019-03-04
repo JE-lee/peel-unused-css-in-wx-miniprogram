@@ -1,0 +1,3 @@
+<view class="{{ index ? 'red' : '' }} {{ (show && active == 1) ? 'active' : 'not-active'}}">
+  <text class="">浏览历史</text>
+</view>
