@@ -11,9 +11,10 @@ async function handleCss(cssPath){
   if(invalid) return []
   let results = [{ classes, cssAst, filePath, originalSize }]
   let getImport = i => {
-    let arr = i.match(/"\s*(.+)\s*"/)
+    let arr = i.match(/["|']\s*(.+)\s*["|']/)
     return arr ? arr[1] : ''
   }
+
   let relatePaths = cssAst.stylesheet.rules
                     .filter(rule => rule.type == 'import')
                     .map(rule => path.resolve(path.dirname(cssPath), getImport(rule.import)))
@@ -32,7 +33,6 @@ function rewrite(cssOb){
     reduce += cssCode.length
     fs.writeFileSync(ob.filePath, cssCode, 'utf8')
   })
-
   console.log(chalk.green(`reduce total size: ${ ((Math.max(0, total - reduce )) / 1024).toFixed(3)} kb` ))
 }
 
@@ -88,7 +88,6 @@ async function task(cssPath, wxmlPaths){
 
     bar.tick()
   }
-
   // resolve cssAst's rules
   cssResults.forEach(({ classes, cssAst }) => {
     classes.forEach(item => cssAst.stylesheet.rules[item.rulesIndex].selectors[item.selectorsIndex] = '')
@@ -99,9 +98,10 @@ async function task(cssPath, wxmlPaths){
     cssAst.stylesheet.rules = cssAst.stylesheet.rules.filter(rule => rule.type != 'rule' || rule.selectors.length)
   })
 
+  console.log(chalk.green(`sucess!`))
   // rewrite css file 
   rewrite(cssResults)
-  console.log(chalk.green(`sucess!`))
+  
   // print warns 
   printWarns(warns)
 }

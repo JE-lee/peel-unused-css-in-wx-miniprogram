@@ -1,5 +1,5 @@
 {
-  "name": "peel-unused-css-in-miniprogram",
+  "name": "peel-unused-css-miniprogram",
   "version": "1.0.3",
   "description": "remove unused class in the app.wxss of weixin-miniprogram",
   "main": "index.js",
@@ -11,7 +11,10 @@
   },
   "author": "",
   "license": "ISC",
-  "keywords":["微信小程序", "css"],
+  "keywords": [
+    "微信小程序",
+    "css"
+  ],
   "dependencies": {
     "ast-types": "^0.12.2",
     "chalk": "^2.4.2",
@@ -20,5 +23,9 @@
     "jsep": "^0.3.4",
     "mocha": "^6.0.2",
     "progress": "^2.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JE-lee/peel-unused-css-in-wx-miniprogram.git"
   }
 }

@@ -7,6 +7,12 @@ npm install -g peel-unused-css-in-miniprogram
 peel-wx 
 ```
 
+## app.wxss中的@import必须是相对路径
+```css
+@import '/weui/weui.wxss';
+@import "/weui/custom.wxss";
+```
+
 ## 哪些样式不会被清除
 * @import,@font-face,@keyframes等规则不会被移除
 * 选择器是标签名如(page,view),或者是id选择器的样式都不会被处理，也就不会移除。(使用id选择器是不被推崇的，所以这里就不考虑处理了)
