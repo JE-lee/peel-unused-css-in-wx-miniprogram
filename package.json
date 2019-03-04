@@ -1,5 +1,5 @@
 {
-  "name": "peel-unused-css-miniprogram",
+  "name": "peel-unused-css-in-miniprogram",
   "version": "1.0.4",
   "description": "remove unused class in the app.wxss of weixin-miniprogram",
   "main": "index.js",
