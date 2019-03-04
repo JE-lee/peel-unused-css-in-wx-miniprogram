@@ -15,6 +15,10 @@ function isConditionalExpression(expression){
   return namedTypes.ConditionalExpression.check(expression)
 }
 
+function isLogicalExpression(expression){
+  return namedTypes.LogicalExpression.check(expression)
+}
+
 async function extractCss(expression){
   // not ConditionalExpression
   let parseResult,
@@ -28,7 +32,7 @@ async function extractCss(expression){
   } catch (error) {
     return failResult
   }
-  if (!namedTypes.ConditionalExpression.check(parseResult))
+  if (!isConditionalExpression(parseResult) && !isLogicalExpression(parseResult))
     return failResult
   
   let extract = unit => {
@@ -37,19 +41,27 @@ async function extractCss(expression){
       isHasValid: false
     }
     let op = ex => {
-      
       if (namedTypes.Literal.check(ex)) {
         data.classes.push(ex.value.trim())
-      } else if (isConditionalExpression(ex)) {
+      } else if (isConditionalExpression(ex) || isLogicalExpression(ex)) {
         let extractResult = extract(ex)
         data.classes = data.classes.concat(extractResult.classes)
         data.isHasValid = extractResult.isHasValid || data.isHasValid
-      } else {
+      } else if (namedTypes.BinaryExpression.check(ex)){
+        // 
+      }else{
+        debugger
         data.isHasValid = true
       }
     }
-    op(unit.consequent)
-    op(unit.alternate)
+
+    if(isConditionalExpression(unit)){
+      op(unit.consequent)
+      op(unit.alternate)
+    }else if(isLogicalExpression(unit)){
+      op(unit.left)
+      op(unit.right)
+    }
     return data 
   }
 
