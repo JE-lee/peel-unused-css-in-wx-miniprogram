@@ -26,13 +26,13 @@ module.exports = function parse(filePath){
         if (item.type != 'rule') return
 
         item.selectors.forEach((i, k) => {
-          let selClasses = i.match(/\.[^.:]+/g)
+          let selClasses = i.match(/\.[^.:\s]+/g)
           if (!selClasses) return
 
           selClasses = selClasses.map(cla => {
             return {
               selector: i,
-              className: cla.trim(),
+              className: cla.trim().slice(1),
               selectorsIndex: k,
               rulesIndex: index
             }
@@ -45,7 +45,8 @@ module.exports = function parse(filePath){
       resolve({
         classes,
         cssAst,
-        filePath
+        filePath,
+        originalSize: data.length
       })
 
     })

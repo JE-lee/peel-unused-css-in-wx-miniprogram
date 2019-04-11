@@ -1,0 +1,32 @@
+@import "./lib/reset.wxss";
+@import "./lib/weui.wxss";
+page {
+  line-height: 1.0;
+}
+view {
+  background-color: #888;
+}
+#main{
+  display: flex;
+  align-items: center;
+}
+#main .banner,#main.banner{
+  text-decoration: underline;
+}
+.title{
+  font-size: 36rpx;
+}
+@font-face {
+  font-family: "Eemblema One";
+  src: url("http://.....woff"),
+      url("http://......tff");
+}
+@keyframes slide {
+  from {
+    top: -60%;
+  }
+
+  to {
+    top: 100%;
+  }
+}

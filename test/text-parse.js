@@ -7,7 +7,8 @@ describe('text parse', function(){
   it(test1, async function(){
     let expression = test1,
       result = await textParse(expression)
-    assert.equal(result.classes[0], 'red' , '提取的class长度应该是 red')
+    assert.equal(result.classes[0], 'red' , '提取的第一个class应该是 red')
+    assert.ok(result.classes.length == 2, '提取的class的数量为2')
     assert.ok(!result.isHasValid, '应该没有无效的表达式')
   })
 
@@ -40,9 +41,42 @@ describe('text parse', function(){
   it(test5, async function () {
     let expression = test5,
       result = await textParse(expression)
-    debugger
-    assert.equal(result.classes.length, 2, '提取的class长度应该是2')
-    assert.strictEqual(result.classes[result.classes.length - 1], 'yellow', '最后一个class应该是yellow')
+    assert.equal(result.classes.length, 3, '提取的class长度应该是3')
+    assert.strictEqual(result.classes[result.classes.length - 1], '', '最后一个class应该是空')
     assert.ok(!result.isHasValid, '应该没有无效的表达式')
+  })
+
+  let test6 = `index ? 'red' : index ? index : ' '`
+  it(test6, async function () {
+    let expression = test6,
+      result = await textParse(expression)
+    assert.equal(result.classes.length, 2, '提取的class长度应该是2')
+    assert.strictEqual(result.classes[result.classes.length - 1], '', '最后一个class应该是空')
+    assert.ok(result.isHasValid, '应该有无效的表达式')
+  })
+
+  let test7 = `(item.type == 'weui-dialog__btn_primary' && btn_disabled) ? 'red' : index ? 'green' : ' '`
+  it(test7, async function () {
+    let expression = test7,
+      result = await textParse(expression)
+    assert.equal(result.classes.length, 3, '提取的class长度应该是3')
+    assert.strictEqual(result.classes[result.classes.length - 1], '', '最后一个class应该是空')
+    assert.ok(!result.isHasValid, '应该没有无效的表达式')
+  })
+
+  let test8 = ` index == 'index' && 'yellow' && 'green' `
+  it(test8, async function(){
+    let expression = test8,
+      result = await textParse(expression)
+    assert.ok(!result.isHasValid, '没有无效的表达式')
+    assert.ok(result.classes.length == 2, '应该提取到2个class')
+  })
+
+  let test9 = ` index == 'index' || index == '123' && 'green' `
+  it(test9, async function () {
+    let expression = test9,
+      result = await textParse(expression)
+    assert.ok(!result.isHasValid, '没有无效的表达式')
+    assert.ok(result.classes.length == 1, '应该提取到1个class')
   })
 })

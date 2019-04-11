@@ -1,14 +1,14 @@
 let fs = require('fs')
 let textParse = require('./text-parse')
 
-async function handleClass(data, filePath){
+async function extracClass(data, filePath){
   let temp = [], pattern = /class\s*=\s*"([^"]*)"/g,
     classNames = [], warn = []
   while ((temp = pattern.exec(data)) != null) {
-    let arr = temp[1].split(/([^\s]*\{\{.*\}\}[^\s]*)/)
+    let arr = temp[1].split(/([^\s]*\{\{[^{}]*\}\}[^\s]*)/)
     for(let i = 0; i < arr.length; i ++){
       let item = arr[i].trim()
-      let push = () => {
+      let pushWarn = () => {
         let lines = data.slice(0, temp.index).split('\n').length
         warn.push({
           lines, // in which line 
@@ -18,18 +18,25 @@ async function handleClass(data, filePath){
       }
       if (item.indexOf('{') != -1) {
         // expression 
-        let { classes, isHasValid } = await textParse(item.slice(item.indexOf('{') + 2, item.lastIndexOf('}') - 1))
+        let leftBraceIndex = item.indexOf('{'),
+          rightBraceIndex = item.lastIndexOf('}'),
+          prefix = item.slice(0, leftBraceIndex),
+          suffix = item.slice(rightBraceIndex+1)
+        let { classes, isHasValid } = await textParse(item.slice(leftBraceIndex + 2, rightBraceIndex - 1))
         if (isHasValid) {
-          push()
-        } else {
-          classNames = classNames.concat(classes)
+          pushWarn()
         }
+        classNames = classNames.concat(classes.map(cls => `${prefix}${cls}${suffix}`).filter(cls => cls))
+        
       } else {
-        if (/^[^|?.\/\\]+$/.test(item)){
-          classNames = classNames.concat(item.split(/\s+/))
-        }else {
-          item && push()
-        }
+        item.split(/\s+/).forEach(cls => {
+          if (/^[^|?.\/\\]+$/.test(cls)) {
+            classNames.push(cls)
+          } else {
+            item && pushWarn()
+          }
+        })
+        
       }
 
     }
@@ -49,7 +56,7 @@ module.exports = function parse(filePath){
         resolve({ invalid: true })
         return
       }
-      handleClass(data,filePath).then(res => {
+      extracClass(data,filePath).then(res => {
         resolve(res)
       }).catch(err => {
         resolve({ invalid: true })

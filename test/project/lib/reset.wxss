@@ -1,0 +1,11 @@
+page{
+  line-height: 1.0;
+}
+
+.tr{
+  text-align: right;
+}
+
+.tl{
+  text-align: left;
+}

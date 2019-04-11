@@ -11,12 +11,12 @@ function parse(expression){
   }
 }
 
-async function isConditionalExpression(expression){
-  try {
-    return namedTypes.ConditionalExpression.check(jsep(expression))
-  } catch (error) {
-    return false
-  }
+function isConditionalExpression(expression){
+  return namedTypes.ConditionalExpression.check(expression)
+}
+
+function isLogicalExpression(expression){
+  return namedTypes.LogicalExpression.check(expression)
 }
 
 async function extractCss(expression){
@@ -32,9 +32,9 @@ async function extractCss(expression){
   } catch (error) {
     return failResult
   }
-  if (!namedTypes.ConditionalExpression.check(parseResult))
+  if (!isConditionalExpression(parseResult) && !isLogicalExpression(parseResult))
     return failResult
-  debugger
+  
   let extract = unit => {
     let data = {
       classes: [],
@@ -42,18 +42,25 @@ async function extractCss(expression){
     }
     let op = ex => {
       if (namedTypes.Literal.check(ex)) {
-        if(ex.value.trim()) data.classes.push(ex.value.trim())
-      } else if (isConditionalExpression(ex)) {
+        data.classes.push(ex.value.trim())
+      } else if (isConditionalExpression(ex) || isLogicalExpression(ex)) {
         let extractResult = extract(ex)
         data.classes = data.classes.concat(extractResult.classes)
         data.isHasValid = extractResult.isHasValid || data.isHasValid
-      } else {
-        debugger
+      } else if (namedTypes.BinaryExpression.check(ex)){
+        // 
+      }else{
         data.isHasValid = true
       }
     }
-    op(unit.consequent)
-    op(unit.alternate)
+
+    if(isConditionalExpression(unit)){
+      op(unit.consequent)
+      op(unit.alternate)
+    }else if(isLogicalExpression(unit)){
+      op(unit.left)
+      op(unit.right)
+    }
     return data 
   }
 

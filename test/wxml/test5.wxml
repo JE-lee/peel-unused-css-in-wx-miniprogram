@@ -1,0 +1,3 @@
+<view class="dialog {{ index ? 'red' :  index ? color : '' }} red">
+  <text class="">浏览历史</text>
+</view>

@@ -6,7 +6,7 @@ page{
   color:#fff;
 }
 
-.weui-cells.head{
+.weui-cells.head image{
   color:red;
 }
 
